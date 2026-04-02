@@ -4,6 +4,10 @@
 
 Open Helpdesk gives you a self-hosted support inbox, public help center, product updates feed, and embeddable widget in one repo. It is designed to boot from a fresh install with a first-owner setup flow, and it keeps Postmark and Slack optional so a basic deployment stays simple.
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/jamesdevonport/open-helpdesk)
+
+Cloudflare’s official deploy-button format is documented [here](https://developers.cloudflare.com/workers/platform/deploy-buttons/). Their docs also note that deploy buttons do not fully support monorepos yet, so if the one-click import does not infer the project correctly, use the manual setup steps below.
+
 ## What You Get
 
 - Password-based first-owner bootstrap at `/setup`
@@ -52,6 +56,84 @@ npm run dev
 
 Then open [http://localhost:3000/setup](http://localhost:3000/setup), create the first owner account, and finish workspace bootstrap.
 
+## Setup Process
+
+### 1. Create a Convex deployment
+
+You need a Convex project before the dashboard can boot.
+
+1. Create or log into your Convex account.
+2. Create a deployment for this project.
+3. Copy the deployment URLs:
+   - `NEXT_PUBLIC_CONVEX_URL`: your public `.convex.cloud` URL
+   - `CONVEX_SITE_URL`: your `.convex.site` URL for webhooks
+
+### 2. Fill the core variables
+
+Copy `.env.example` to `.env.local` and set:
+
+```bash
+NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
+CONVEX_SITE_URL=https://your-deployment.convex.site
+SITE_URL=https://support.example.com
+```
+
+What each one does:
+
+- `NEXT_PUBLIC_CONVEX_URL` is used by the dashboard and widget client
+- `CONVEX_SITE_URL` is used for inbound webhook endpoints like Postmark
+- `SITE_URL` is your public support hostname and the URL the widget links back to
+
+### 3. Boot the workspace
+
+1. Run `npm install`
+2. Run `npm run dev:convex`
+3. Run `npm run dev`
+4. Open `http://localhost:3000/setup`
+5. Create the first owner account with email + password
+6. Enter the workspace name and complete bootstrap
+
+After that:
+
+- `/setup` is effectively closed
+- normal dashboard sign-in uses email + password
+- additional team members should be added from the dashboard, not by reopening bootstrap
+
+### 4. Optional keys
+
+You do not need these for the basic product to work.
+
+Optional Postmark keys:
+
+- `POSTMARK_SERVER_TOKEN`
+- `POSTMARK_INBOUND_ADDRESS`
+- `POSTMARK_WEBHOOK_SECRET`
+- `DEFAULT_FROM_EMAIL`
+- `INBOUND_ORG_ID`
+
+Optional Slack keys:
+
+- `SLACK_BOT_TOKEN`
+- `SLACK_CHANNEL_ID`
+- `SLACK_SIGNING_SECRET`
+
+### 5. Deploy order
+
+The intended order is:
+
+1. Configure Convex and deploy the backend first with `npx convex deploy --yes`
+2. Deploy the frontend/worker with `npm run deploy:cloudflare`
+3. Point your domain at Cloudflare
+4. Set `SITE_URL` to that final public hostname
+5. If you want a docs-only hostname, also set `HELP_CENTER_HOST`
+
+### 6. Where keys live
+
+- Local development: `.env.local`
+- Cloudflare production runtime: Worker environment variables / secrets
+- Convex production runtime: Convex environment variables
+- GitHub Actions: repository secrets / variables if you use the included workflows
+
 ## Deploy With AI
 
 The repo is set up so an agent can operate from the root without guessing workspace paths.
@@ -69,6 +151,8 @@ Expected checkpoints:
 - `npm run check:setup` reports the three required core variables as configured
 - `npx convex deploy --yes` completes without schema or auth errors
 - `npm run deploy:cloudflare` builds via OpenNext and uploads the Worker
+
+If you use the Cloudflare deploy button, treat it as a shortcut for importing the repo into your account. You will still need to provide the same core variables and finish the `/setup` bootstrap flow.
 
 ## Environment
 
