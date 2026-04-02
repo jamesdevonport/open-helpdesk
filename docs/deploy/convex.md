@@ -9,7 +9,7 @@
 ## Local development
 
 1. Copy `.env.example` to `.env.local`.
-2. Fill in the three core variables.
+2. Uncomment and fill in the three core variables.
 3. Install dependencies with `npm install`.
 4. Start the backend with `npm run dev:convex`.
 5. Start the app with `npm run dev`.

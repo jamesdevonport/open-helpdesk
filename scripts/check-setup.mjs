@@ -64,7 +64,7 @@ if (missingRequired.length > 0) {
   }
   console.log("\nNext step:");
   console.log("1. Copy .env.example to .env.local");
-  console.log("2. Fill the required values");
+  console.log("2. Uncomment and fill the required values");
   console.log("3. Re-run `npm run check:setup`");
   process.exit(1);
 }

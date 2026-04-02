@@ -7,6 +7,7 @@ Open Helpdesk targets Cloudflare Workers via OpenNext.
 1. Deploy Convex first.
 2. Set `SITE_URL` to the final public hostname that will serve the dashboard and help center.
 3. Make sure `NEXT_PUBLIC_CONVEX_URL` and `CONVEX_SITE_URL` point at the live Convex deployment.
+4. If you use the deploy button, Cloudflare will collect those core values from `wrangler.jsonc`. They stay commented in `.env.example` for local development so the setup page does not show duplicate prompts.
 
 ## Local preview
 

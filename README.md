@@ -70,7 +70,7 @@ You need a Convex project before the dashboard can boot.
 
 ### 2. Fill the core variables
 
-Copy `.env.example` to `.env.local` and set:
+Copy `.env.example` to `.env.local`, then uncomment and set:
 
 ```bash
 NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
@@ -152,7 +152,7 @@ Expected checkpoints:
 - `npx convex deploy --yes` completes without schema or auth errors
 - `npm run deploy:cloudflare` builds via OpenNext and uploads the Worker
 
-If you use the Cloudflare deploy button, treat it as a shortcut for importing the repo into your account. You will still need to provide the same core variables and finish the `/setup` bootstrap flow.
+If you use the Cloudflare deploy button, Cloudflare will prompt for the core runtime variables from `wrangler.jsonc`. The same keys stay commented in `.env.example` so local development is documented without creating duplicate deploy-button fields.
 
 ## Environment
 
