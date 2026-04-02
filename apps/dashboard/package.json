@@ -1,0 +1,44 @@
+{
+  "name": "@open-helpdesk/dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "build:worker": "opennextjs-cloudflare build",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@auth/core": "^0.37.0",
+    "@convex-dev/auth": "^0.0.91",
+    "@tailwindcss/typography": "^0.5.19",
+    "@open-helpdesk/widget": "*",
+    "clsx": "^2.1.1",
+    "convex": "^1.21.0",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.6.0",
+    "lucide-react": "^0.511.0",
+    "next": "^15.3.0",
+    "oslo": "^1.2.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.17.3",
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.77.0"
+  }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; background: #f8f9fa; font-family: system-ui, -apple-system, sans-serif; }
+    .demo-content { padding: 32px; max-width: 480px; }
+    .demo-content h2 { font-size: 18px; color: #1a1a1a; margin: 0 0 8px; }
+    .demo-content p { font-size: 13px; color: #666; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="demo-content">
+    <h2>Your Website</h2>
+    <p>This is a preview of how the widget will appear on your site. Click the bubble to interact with it.</p>
+  </div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    window.OpenHelpdesk = {
+      organizationId: params.get("organizationId") || "",
+      convexUrl: params.get("convexUrl") || "",
+      siteUrl: params.get("siteUrl") || window.location.origin,
+      color: params.get("color") || "#1977f2",
+      greeting: params.get("greeting") || "Hi! How can we help?",
+      position: params.get("position") || "bottom-right"
+    };
+  </script>
+  <script src="/open-helpdesk.js"></script>
+</body>
+</html>

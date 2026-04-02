@@ -1,0 +1,34 @@
+{
+  "name": "open-helpdesk",
+  "private": true,
+  "packageManager": "npm@11.10.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:dashboard": "npm run dev --workspace=@open-helpdesk/dashboard",
+    "dev:widget": "npm run dev --workspace=@open-helpdesk/widget",
+    "dev:convex": "npx convex dev",
+    "build": "turbo build",
+    "build:dashboard": "npm run build --workspace=@open-helpdesk/dashboard",
+    "build:widget": "npm run build --workspace=@open-helpdesk/widget",
+    "build:worker": "npm run build:worker --workspace=@open-helpdesk/dashboard",
+    "preview": "npm run preview --workspace=@open-helpdesk/dashboard",
+    "deploy:cloudflare": "npm run deploy --workspace=@open-helpdesk/dashboard",
+    "lint": "turbo lint",
+    "check:setup": "node scripts/check-setup.mjs"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@auth/core": "^0.37.0",
+    "@convex-dev/auth": "^0.0.91",
+    "convex": "^1.34.0",
+    "oslo": "^1.2.1"
+  }
+}
