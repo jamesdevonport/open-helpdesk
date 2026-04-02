@@ -15,6 +15,7 @@
     "build:dashboard": "npm run build --workspace=@open-helpdesk/dashboard",
     "build:widget": "npm run build --workspace=@open-helpdesk/widget",
     "build:worker": "npm run build:worker --workspace=@open-helpdesk/dashboard",
+    "deploy": "npm run build:widget && npm run build:worker && wrangler deploy",
     "preview": "npm run preview --workspace=@open-helpdesk/dashboard",
     "deploy:cloudflare": "npm run deploy --workspace=@open-helpdesk/dashboard",
     "lint": "turbo lint",
@@ -30,5 +31,45 @@
     "@convex-dev/auth": "^0.0.91",
     "convex": "^1.34.0",
     "oslo": "^1.2.1"
+  },
+  "cloudflare": {
+    "bindings": {
+      "NEXT_PUBLIC_CONVEX_URL": {
+        "description": "Your public Convex deployment URL, for example `https://your-deployment.convex.cloud`."
+      },
+      "CONVEX_SITE_URL": {
+        "description": "Your Convex site URL used for webhooks, for example `https://your-deployment.convex.site`."
+      },
+      "SITE_URL": {
+        "description": "The final public URL of this support deployment, for example `https://support.example.com`."
+      },
+      "HELP_CENTER_HOST": {
+        "description": "Optional dedicated docs hostname, such as `docs.example.com`. Leave unset if you want `/help` on the main app domain."
+      },
+      "POSTMARK_SERVER_TOKEN": {
+        "description": "Optional Postmark server token for outbound email replies."
+      },
+      "POSTMARK_INBOUND_ADDRESS": {
+        "description": "Optional reply-to address used for inbound Postmark threading."
+      },
+      "POSTMARK_WEBHOOK_SECRET": {
+        "description": "Optional shared secret for validating inbound Postmark webhooks."
+      },
+      "DEFAULT_FROM_EMAIL": {
+        "description": "Optional fallback sender address, such as `support@example.com`."
+      },
+      "INBOUND_ORG_ID": {
+        "description": "Optional organization override for inbound email routing. Leave unset for single-workspace installs."
+      },
+      "SLACK_BOT_TOKEN": {
+        "description": "Optional Slack bot token if you want Slack integration."
+      },
+      "SLACK_CHANNEL_ID": {
+        "description": "Optional default Slack channel ID for support threads."
+      },
+      "SLACK_SIGNING_SECRET": {
+        "description": "Optional Slack signing secret for inbound event verification."
+      }
+    }
   }
 }

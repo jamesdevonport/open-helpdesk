@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "open-helpdesk",
+  "main": "apps/dashboard/.open-next/worker.js",
+  "compatibility_date": "2026-03-31",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "apps/dashboard/.open-next/assets",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "NEXT_PUBLIC_CONVEX_URL": "https://your-deployment.convex.cloud",
+    "CONVEX_SITE_URL": "https://your-deployment.convex.site",
+    "SITE_URL": "https://support.example.com",
+    "HELP_CENTER_HOST": ""
+  }
+}
