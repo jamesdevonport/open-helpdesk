@@ -3,13 +3,13 @@
 import Script from "next/script";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-
-const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "";
+import { useRuntimeConfig } from "@/lib/runtime-config";
 
 export function HelpWidgetBootstrap() {
+  const { convexUrl } = useRuntimeConfig();
   const publicContext = useQuery(api.organizations.getPublicContext);
 
-  if (!CONVEX_URL || !publicContext) {
+  if (!convexUrl || !publicContext) {
     return null;
   }
 
@@ -18,7 +18,7 @@ export function HelpWidgetBootstrap() {
       <Script id="open-helpdesk-widget-config" strategy="afterInteractive">{`
         window.OpenHelpdesk = Object.assign({}, window.OpenHelpdesk, {
           organizationId: "${publicContext.organizationId}",
-          convexUrl: "${CONVEX_URL}",
+          convexUrl: "${convexUrl}",
           siteUrl: window.location.origin,
           color: ${JSON.stringify(publicContext.widgetColor)},
           greeting: ${JSON.stringify(publicContext.widgetGreeting)},

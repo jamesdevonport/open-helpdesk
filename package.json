@@ -16,8 +16,8 @@
     "build:widget": "npm run build --workspace=@open-helpdesk/widget",
     "build:worker": "npm run build:worker --workspace=@open-helpdesk/dashboard",
     "deploy": "npm run build:widget && npm run build:worker && wrangler deploy",
-    "preview": "npm run preview --workspace=@open-helpdesk/dashboard",
-    "deploy:cloudflare": "npm run deploy --workspace=@open-helpdesk/dashboard",
+    "preview": "npm run build:widget && npm run build:worker && wrangler dev",
+    "deploy:cloudflare": "npm run deploy",
     "lint": "turbo lint",
     "check:setup": "node scripts/check-setup.mjs"
   },

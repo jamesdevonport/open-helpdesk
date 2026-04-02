@@ -13,12 +13,10 @@ import {
   Webhook,
   ArrowRight,
 } from "lucide-react";
-
-const CONVEX_SITE_URL = process.env.NEXT_PUBLIC_CONVEX_URL
-  ? process.env.NEXT_PUBLIC_CONVEX_URL.replace(".cloud", ".site")
-  : "";
+import { useRuntimeConfig } from "@/lib/runtime-config";
 
 export default function EmailSettingsPage() {
+  const { convexSiteUrl } = useRuntimeConfig();
   const [fromName, setFromName] = useState("");
   const [fromAddress, setFromAddress] = useState("");
   const [fallbackDelay, setFallbackDelay] = useState(5);
@@ -105,7 +103,9 @@ export default function EmailSettingsPage() {
             </p>
             <div className="rounded-lg bg-surface-tertiary px-3 py-2.5">
               <code className="break-all text-[11px] text-text-primary">
-                {CONVEX_SITE_URL ? `${CONVEX_SITE_URL}/api/email/inbound` : "Set NEXT_PUBLIC_CONVEX_URL to generate the webhook URL"}
+                {convexSiteUrl
+                  ? `${convexSiteUrl}/api/email/inbound`
+                  : "Set CONVEX_SITE_URL to generate the webhook URL"}
               </code>
             </div>
             <div className="mt-3 text-[11px] text-text-tertiary">

@@ -14,6 +14,7 @@ Open Helpdesk targets Cloudflare Workers via OpenNext.
 1. Install dependencies with `npm install`.
 2. Build the widget with `npm run build:widget`.
 3. Preview the Worker runtime with `npm run preview`.
+4. This preview path uses the root `wrangler.jsonc`, so it exercises the same Worker bindings and environment-variable path as production.
 
 ## Production deploy
 

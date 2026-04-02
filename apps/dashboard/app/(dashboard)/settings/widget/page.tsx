@@ -5,6 +5,7 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../../../../convex/_generated/api";
 import { Id } from "../../../../../../convex/_generated/dataModel";
 import { Palette, RotateCw, Code, Copy, Check, Loader2 } from "lucide-react";
+import { useRuntimeConfig } from "@/lib/runtime-config";
 
 const positions = ["bottom-right", "bottom-left"] as const;
 const colors = [
@@ -18,9 +19,8 @@ const colors = [
   "#be185d",
 ];
 
-const CONVEX_URL = process.env.NEXT_PUBLIC_CONVEX_URL || "";
-
 export default function WidgetSettingsPage() {
+  const { convexUrl } = useRuntimeConfig();
   const [color, setColor] = useState("#1977f2");
   const [position, setPosition] = useState<string>("bottom-right");
   const [greeting, setGreeting] = useState("Hi! How can we help?");
@@ -56,12 +56,12 @@ export default function WidgetSettingsPage() {
       color,
       greeting,
       position,
-      convexUrl: CONVEX_URL,
+      convexUrl,
       siteUrl,
       organizationId: orgId || "",
     });
     return `/widget-preview.html?${params.toString()}`;
-  }, [color, greeting, position, orgId, siteUrl]);
+  }, [color, greeting, position, convexUrl, orgId, siteUrl]);
 
   const reloadWidget = useCallback(() => {
     setIframeKey((k) => k + 1);
@@ -76,7 +76,7 @@ export default function WidgetSettingsPage() {
   const embedCode = `<script>
   window.OpenHelpdesk = {
     organizationId: "${orgId || ""}",
-    convexUrl: "${CONVEX_URL}",
+    convexUrl: "${convexUrl}",
     siteUrl: "${embedOrigin}",
     color: "${color}",
     greeting: ${JSON.stringify(greeting)},
