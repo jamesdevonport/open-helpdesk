@@ -21,6 +21,7 @@
 2. Set the same core variables in your deployment environment.
 3. If you want email support, add the optional Postmark variables.
 4. Run `npx convex deploy --yes`.
+5. Make sure the deployment you push to is the same one referenced by `NEXT_PUBLIC_CONVEX_URL`.
 
 ## Useful commands
 

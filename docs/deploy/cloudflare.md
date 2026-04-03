@@ -9,6 +9,11 @@ Open Helpdesk targets Cloudflare Workers via OpenNext.
 3. Make sure `NEXT_PUBLIC_CONVEX_URL` and `CONVEX_SITE_URL` point at the live Convex deployment.
 4. If you use the deploy button, Cloudflare will collect those core values from `wrangler.jsonc`. They stay commented in `.env.example` for local development so the setup page does not show duplicate prompts.
 
+Important:
+
+- The Deploy to Cloudflare button does not deploy your Convex backend.
+- If your Convex project is new, run `npx convex deploy --yes` from the repo root after you connect the CLI to the deployment that matches `NEXT_PUBLIC_CONVEX_URL`.
+
 ## Local preview
 
 1. Install dependencies with `npm install`.

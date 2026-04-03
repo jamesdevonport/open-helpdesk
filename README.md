@@ -127,6 +127,12 @@ The intended order is:
 4. Set `SITE_URL` to that final public hostname
 5. If you want a docs-only hostname, also set `HELP_CENTER_HOST`
 
+Important:
+
+- The Cloudflare deploy button deploys the Worker only.
+- It does not push the Convex backend functions to your Convex deployment.
+- If you point `NEXT_PUBLIC_CONVEX_URL` at a fresh Convex project, you still need to run `npx convex deploy --yes` from this repo before the app can boot.
+
 ### 6. Where keys live
 
 - Local development: `.env.local`
@@ -152,7 +158,7 @@ Expected checkpoints:
 - `npx convex deploy --yes` completes without schema or auth errors
 - `npm run deploy:cloudflare` builds via OpenNext and uploads the Worker
 
-If you use the Cloudflare deploy button, Cloudflare will prompt for the core runtime variables from `wrangler.jsonc`. The same keys stay commented in `.env.example` so local development is documented without creating duplicate deploy-button fields.
+If you use the Cloudflare deploy button, Cloudflare will prompt for the core runtime variables from `wrangler.jsonc`. The same keys stay commented in `.env.example` so local development is documented without creating duplicate deploy-button fields. After that Worker deploy, you still need to deploy the Convex backend separately with `npx convex deploy --yes`.
 
 ## Environment
 
