@@ -28,10 +28,11 @@ export function ConvexClientProvider({
           </h1>
           <p className="mt-3 text-sm leading-6 text-text-secondary">
             This deployment does not have a Convex URL available. For Cloudflare
-            installs, set <code>CONVEX_DEPLOY_KEY</code> so the build can deploy
-            Convex and inject <code>NEXT_PUBLIC_CONVEX_URL</code>. For manual
-            installs, set <code>NEXT_PUBLIC_CONVEX_URL</code> directly and
-            redeploy.
+            installs, set <code>NEXT_PUBLIC_CONVEX_URL</code> as a Worker
+            variable in the deploy setup screen. For manual installs, set{" "}
+            <code>NEXT_PUBLIC_CONVEX_URL</code> directly before building and
+            redeploy. If you want the deploy command to publish Convex for you
+            in CI, use <code>CONVEX_DEPLOY_KEY</code> in that build environment.
           </p>
         </div>
       </main>

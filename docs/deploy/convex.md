@@ -12,14 +12,21 @@ You do not need to import seed data or run a bootstrap script before opening the
 2. Create a new project.
 3. Convex will provision a production deployment and development deployments for that project.
 
-## Generate the right key
+## Get the production URL
 
-For Cloudflare installs, use a `Production Deploy Key`.
+For Cloudflare deploy-button installs, the main value you need is the production deployment URL.
 
 1. Open the production deployment.
-2. Go to `Deployment Settings` > `General`.
-3. Click `Generate Production Deploy Key`.
-4. Copy the key and store it as `CONVEX_DEPLOY_KEY`.
+2. Go to `Deployment Settings` > `URL and Deploy Key`.
+3. Copy the deployment URL that looks like `https://your-project.convex.cloud`.
+4. Use that value as `NEXT_PUBLIC_CONVEX_URL` in Cloudflare.
+
+## Optional automation key
+
+If you want CI or a local script to run `npx convex deploy` non-interactively, generate a `Production Deploy Key`.
+
+1. On the same `URL and Deploy Key` page, click `Generate Production Deploy Key`.
+2. Copy the key and store it as `CONVEX_DEPLOY_KEY`.
 
 Convex documents this deploy-key flow in their hosting guides and CLI docs:
 

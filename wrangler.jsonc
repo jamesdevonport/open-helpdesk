@@ -9,6 +9,7 @@
     "binding": "ASSETS"
   },
   "vars": {
+    "NEXT_PUBLIC_CONVEX_URL": "",
     "SITE_URL": "",
     "HELP_CENTER_HOST": ""
   }

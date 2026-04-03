@@ -35,8 +35,8 @@
   },
   "cloudflare": {
     "bindings": {
-      "CONVEX_DEPLOY_KEY": {
-        "description": "Recommended. A Convex Production Deploy Key from your Convex dashboard, used to deploy the blank Convex project and inject the app URL during the Cloudflare build."
+      "NEXT_PUBLIC_CONVEX_URL": {
+        "description": "Your public Convex deployment URL. In Convex, open the production deployment for your project and copy the `.convex.cloud` URL."
       },
       "SITE_URL": {
         "description": "Optional final public URL of this support deployment, for example `https://support.example.com`. Leave unset to use the Cloudflare workers.dev hostname."

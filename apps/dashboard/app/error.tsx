@@ -21,7 +21,7 @@ function getErrorCopy(error: Error) {
       summary:
         "This Cloudflare deployment can reach your Convex URL, but that Convex deployment does not have the Open Helpdesk functions on it yet.",
       detail:
-        "The build connected to a Convex deployment, but the Open Helpdesk functions are not live on that deployment yet. Deploy the backend to the same production deployment behind your CONVEX_DEPLOY_KEY or NEXT_PUBLIC_CONVEX_URL.",
+        "The build connected to a Convex deployment, but the Open Helpdesk functions are not live on that deployment yet. Deploy the backend to the same production deployment behind your NEXT_PUBLIC_CONVEX_URL.",
     };
   }
 
@@ -79,8 +79,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
                   <li>Clone the repository locally if you have not already.</li>
                   <li>
                     Connect the Convex CLI to the same production deployment
-                    you used for <code>CONVEX_DEPLOY_KEY</code> or{" "}
-                    <code>NEXT_PUBLIC_CONVEX_URL</code>.
+                    behind <code>NEXT_PUBLIC_CONVEX_URL</code>.
                   </li>
                   <li>
                     Run <code>npx convex deploy --yes</code> from the repo

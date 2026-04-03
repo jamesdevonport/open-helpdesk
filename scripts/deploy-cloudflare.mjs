@@ -67,20 +67,33 @@ if (deployKey) {
     ],
     env,
   );
-} else if (convexUrl) {
-  console.log(
-    "No CONVEX_DEPLOY_KEY found. Building against the existing NEXT_PUBLIC_CONVEX_URL without deploying Convex.\n",
-  );
-  run("npm", ["run", "build:cloudflare"], env);
 } else {
-  console.error("Missing Convex deployment configuration.\n");
-  console.error(
-    "For one-click Cloudflare installs, provide CONVEX_DEPLOY_KEY so the build can deploy Convex and inject NEXT_PUBLIC_CONVEX_URL.",
+  if (convexUrl) {
+    console.log(
+      "No CONVEX_DEPLOY_KEY found. Building against the existing NEXT_PUBLIC_CONVEX_URL without deploying Convex.\n",
+    );
+  } else {
+    console.log(
+      "No build-time Convex configuration found. Building the Worker and relying on the Cloudflare runtime binding for NEXT_PUBLIC_CONVEX_URL.\n",
+    );
+    console.log(
+      "If you are deploying from a local shell, set NEXT_PUBLIC_CONVEX_URL or CONVEX_DEPLOY_KEY to avoid shipping a Worker without Convex configured.\n",
+    );
+  }
+
+  run("npm", ["run", "build:cloudflare"], env);
+
+  if (!convexUrl) {
+    console.log(
+      "Skipping Convex backend deploy. If this points at a blank Convex project, run `npx convex deploy --yes` separately against the same production deployment after Cloudflare finishes.\n",
+    );
+  }
+}
+
+if (!deployKey && !convexUrl) {
+  console.log(
+    "Continuing with wrangler deploy only because the Cloudflare deploy-button flow supplies NEXT_PUBLIC_CONVEX_URL as a runtime Worker binding.\n",
   );
-  console.error(
-    "For manual installs, set NEXT_PUBLIC_CONVEX_URL in your environment or .env.local before running this command.",
-  );
-  process.exit(1);
 }
 
 run("wrangler", ["deploy"], env);
