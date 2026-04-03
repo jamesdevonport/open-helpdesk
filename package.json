@@ -15,7 +15,8 @@
     "build:dashboard": "npm run build --workspace=@open-helpdesk/dashboard",
     "build:widget": "npm run build --workspace=@open-helpdesk/widget",
     "build:worker": "npm run build:worker --workspace=@open-helpdesk/dashboard",
-    "deploy": "npm run build:widget && npm run build:worker && wrangler deploy",
+    "build:cloudflare": "npm run build:widget && npm run build:worker",
+    "deploy": "node scripts/deploy-cloudflare.mjs",
     "preview": "npm run build:widget && npm run build:worker && wrangler dev",
     "deploy:cloudflare": "npm run deploy",
     "lint": "turbo lint",
@@ -34,14 +35,11 @@
   },
   "cloudflare": {
     "bindings": {
-      "NEXT_PUBLIC_CONVEX_URL": {
-        "description": "Your public Convex deployment URL, for example `https://your-deployment.convex.cloud`."
-      },
-      "CONVEX_SITE_URL": {
-        "description": "Your Convex site URL used for webhooks, for example `https://your-deployment.convex.site`."
+      "CONVEX_DEPLOY_KEY": {
+        "description": "Recommended. A Convex Production Deploy Key from your Convex dashboard, used to deploy the blank Convex project and inject the app URL during the Cloudflare build."
       },
       "SITE_URL": {
-        "description": "The final public URL of this support deployment, for example `https://support.example.com`."
+        "description": "Optional final public URL of this support deployment, for example `https://support.example.com`. Leave unset to use the Cloudflare workers.dev hostname."
       },
       "HELP_CENTER_HOST": {
         "description": "Optional dedicated docs hostname, such as `docs.example.com`. Leave unset if you want `/help` on the main app domain."

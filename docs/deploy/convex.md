@@ -1,31 +1,47 @@
 # Convex Deployment
 
-## Required values
+## Fresh install target
 
-- `NEXT_PUBLIC_CONVEX_URL`
-- `CONVEX_SITE_URL`
-- `SITE_URL`
+Open Helpdesk is designed to start from a blank Convex project.
+
+You do not need to import seed data or run a bootstrap script before opening the app. The first workspace and owner are created through `/setup`.
+
+## Create the project
+
+1. Open [dashboard.convex.dev](https://dashboard.convex.dev).
+2. Create a new project.
+3. Convex will provision a production deployment and development deployments for that project.
+
+## Generate the right key
+
+For Cloudflare installs, use a `Production Deploy Key`.
+
+1. Open the production deployment.
+2. Go to `Deployment Settings` > `General`.
+3. Click `Generate Production Deploy Key`.
+4. Copy the key and store it as `CONVEX_DEPLOY_KEY`.
+
+Convex documents this deploy-key flow in their hosting guides and CLI docs:
+
+- `npx convex deploy` uses `CONVEX_DEPLOY_KEY` in CI and hosting environments
+- `--cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL` lets the frontend build receive the correct production URL automatically
 
 ## Local development
 
-1. Copy `.env.example` to `.env.local`.
-2. Uncomment and fill in the three core variables.
-3. Install dependencies with `npm install`.
-4. Start the backend with `npm run dev:convex`.
-5. Start the app with `npm run dev`.
-6. Open `http://localhost:3000/setup` and create the first owner account.
+The easiest local path is:
 
-## Production deployment
+1. Run `npm install`.
+2. Run `npm run dev:convex`.
+3. Follow the Convex CLI prompt to log in and create or reconnect a development deployment.
+4. Let Convex write the local deployment settings into `.env.local`.
+5. Run `npm run dev`.
 
-1. Create a Convex project and deployment.
-2. Set the same core variables in your deployment environment.
-3. If you want email support, add the optional Postmark variables.
-4. Run `npx convex deploy --yes`.
-5. Make sure the deployment you push to is the same one referenced by `NEXT_PUBLIC_CONVEX_URL`.
+If you prefer to manage the file manually, `NEXT_PUBLIC_CONVEX_URL` is the only required local variable. `CONVEX_SITE_URL` can be derived automatically.
 
 ## Useful commands
 
-- `npx convex env list`
-- `npx convex env set NAME value`
 - `npx convex deploy --yes`
+- `npx convex env list`
+- `npx convex env get NAME`
+- `npx convex env set NAME value`
 - `npm run check:setup`

@@ -34,12 +34,22 @@ flowchart LR
   Convex --> Slack
 ```
 
+## Fastest Install
+
+1. Create a blank Convex project at [dashboard.convex.dev](https://dashboard.convex.dev).
+2. In Convex, open your production deployment, then go to `Deployment Settings` > `General`.
+3. Click `Generate Production Deploy Key` and copy the key.
+4. Click the Deploy to Cloudflare button above and paste that key as `CONVEX_DEPLOY_KEY`.
+5. When the deploy finishes, open `/setup` on the deployed app and create the first owner.
+
+You do not need to seed the database first. A blank Convex project is the intended starting point, and `/setup` creates the first workspace and admin account.
+
 ## Quickstart
 
+Install dependencies:
+
 ```bash
-cp .env.example .env.local
 npm install
-npm run check:setup
 ```
 
 Start Convex in one terminal:
@@ -48,7 +58,9 @@ Start Convex in one terminal:
 npm run dev:convex
 ```
 
-Start the app in another:
+The first time you run that command, Convex will prompt you to log in, create or reconnect a project, and write the local deployment settings into `.env.local`.
+
+Start the app in another terminal:
 
 ```bash
 npm run dev
@@ -58,40 +70,49 @@ Then open [http://localhost:3000/setup](http://localhost:3000/setup), create the
 
 ## Setup Process
 
-### 1. Create a Convex deployment
+### 1. Create a blank Convex project
 
-You need a Convex project before the dashboard can boot.
+1. Open the Convex dashboard at [dashboard.convex.dev](https://dashboard.convex.dev).
+2. Click `Create Project`.
+3. Convex will create a project with a production deployment and development deployments.
+4. Leave the database blank. Open Helpdesk bootstraps itself from the UI.
 
-1. Create or log into your Convex account.
-2. Create a deployment for this project.
-3. Copy the deployment URLs:
-   - `NEXT_PUBLIC_CONVEX_URL`: your public `.convex.cloud` URL
-   - `CONVEX_SITE_URL`: your `.convex.site` URL for webhooks
+### 2. Generate the Convex key you need
 
-### 2. Fill the core variables
+For Cloudflare installs, the key you want is a `Production Deploy Key`.
 
-Copy `.env.example` to `.env.local`, then uncomment and set:
+1. In Convex, open the production deployment for your project.
+2. Go to `Deployment Settings` > `General`.
+3. Click `Generate Production Deploy Key`.
+4. Copy the key and keep it safe.
 
-```bash
-NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
-CONVEX_SITE_URL=https://your-deployment.convex.site
-SITE_URL=https://support.example.com
-```
+What this key does:
 
-What each one does:
+- `CONVEX_DEPLOY_KEY` lets `npx convex deploy` target that production deployment in CI or Cloudflare builds
+- the same command injects `NEXT_PUBLIC_CONVEX_URL` into the Open Helpdesk build automatically
+- this means users do not need to paste Convex URLs into the Cloudflare setup page for a fresh install
 
-- `NEXT_PUBLIC_CONVEX_URL` is used by the dashboard and widget client
-- `CONVEX_SITE_URL` is used for inbound webhook endpoints like Postmark
-- `SITE_URL` is your public support hostname and the URL the widget links back to
+### 3. Deploy on Cloudflare
 
-### 3. Boot the workspace
+1. Click the Deploy to Cloudflare button above.
+2. Paste your Convex Production Deploy Key as `CONVEX_DEPLOY_KEY`.
+3. Optionally set `SITE_URL` if you already know the final custom domain.
+4. Optionally set `HELP_CENTER_HOST` if you want docs on a separate hostname.
+5. Leave Postmark and Slack fields empty unless you are enabling those integrations now.
 
-1. Run `npm install`
-2. Run `npm run dev:convex`
-3. Run `npm run dev`
-4. Open `http://localhost:3000/setup`
-5. Create the first owner account with email + password
-6. Enter the workspace name and complete bootstrap
+This repo's Cloudflare deploy command will:
+
+1. run `npx convex deploy --cmd-url-env-var-name NEXT_PUBLIC_CONVEX_URL --cmd "npm run build:cloudflare"`
+2. push the Convex backend to your blank production deployment
+3. build the dashboard and widget against that production Convex URL
+4. deploy the Cloudflare Worker with `wrangler deploy`
+
+### 4. Boot the workspace
+
+1. Open the deployed app URL.
+2. Go to `/setup`.
+3. Create the first owner account with email + password.
+4. Enter the workspace name and complete bootstrap.
 
 After that:
 
@@ -99,7 +120,7 @@ After that:
 - normal dashboard sign-in uses email + password
 - additional team members should be added from the dashboard, not by reopening bootstrap
 
-### 4. Optional keys
+### 5. Optional keys
 
 You do not need these for the basic product to work.
 
@@ -117,22 +138,6 @@ Optional Slack keys:
 - `SLACK_CHANNEL_ID`
 - `SLACK_SIGNING_SECRET`
 
-### 5. Deploy order
-
-The intended order is:
-
-1. Configure Convex and deploy the backend first with `npx convex deploy --yes`
-2. Deploy the frontend/worker with `npm run deploy:cloudflare`
-3. Point your domain at Cloudflare
-4. Set `SITE_URL` to that final public hostname
-5. If you want a docs-only hostname, also set `HELP_CENTER_HOST`
-
-Important:
-
-- The Cloudflare deploy button deploys the Worker only.
-- It does not push the Convex backend functions to your Convex deployment.
-- If you point `NEXT_PUBLIC_CONVEX_URL` at a fresh Convex project, you still need to run `npx convex deploy --yes` from this repo before the app can boot.
-
 ### 6. Where keys live
 
 - Local development: `.env.local`
@@ -145,30 +150,40 @@ Important:
 The repo is set up so an agent can operate from the root without guessing workspace paths.
 
 ```bash
+export CONVEX_DEPLOY_KEY=your_production_deploy_key
 npm install
-npm run check:setup
-npm run build:widget
-npx convex deploy --yes
 npm run deploy:cloudflare
 ```
 
 Expected checkpoints:
 
-- `npm run check:setup` reports the three required core variables as configured
-- `npx convex deploy --yes` completes without schema or auth errors
-- `npm run deploy:cloudflare` builds via OpenNext and uploads the Worker
+- `npx convex deploy` runs first and succeeds against the blank production deployment
+- the build receives `NEXT_PUBLIC_CONVEX_URL` automatically from Convex
+- `npm run deploy:cloudflare` uploads the Worker after the backend deploy completes
 
-If you use the Cloudflare deploy button, Cloudflare will prompt for the core runtime variables from `wrangler.jsonc`. The same keys stay commented in `.env.example` so local development is documented without creating duplicate deploy-button fields. After that Worker deploy, you still need to deploy the Convex backend separately with `npx convex deploy --yes`.
+If you already have a deployed Convex backend and want to skip the backend step, you can set `NEXT_PUBLIC_CONVEX_URL` manually and run the same command without `CONVEX_DEPLOY_KEY`.
 
 ## Environment
 
-### Required core
+### Required for Cloudflare one-click installs
+
+| Variable | Purpose |
+| --- | --- |
+| `CONVEX_DEPLOY_KEY` | Convex Production Deploy Key used to deploy the blank backend and inject the production URL during the Cloudflare build |
+
+### Required for local development or manual Worker deploys
 
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_CONVEX_URL` | Public Convex client URL used by the dashboard and widget |
-| `CONVEX_SITE_URL` | Convex site URL used for inbound webhooks |
-| `SITE_URL` | Public URL of the support deployment |
+
+### Optional core
+
+| Variable | Purpose |
+| --- | --- |
+| `CONVEX_SITE_URL` | Convex site URL used for inbound webhooks. If unset, Open Helpdesk derives it from `NEXT_PUBLIC_CONVEX_URL` |
+| `SITE_URL` | Optional public URL of the support deployment. Leave unset to use the Cloudflare `workers.dev` hostname |
+| `HELP_CENTER_HOST` | Optional docs-only hostname rewrite |
 
 ### Optional email
 
@@ -192,10 +207,8 @@ If you use the Cloudflare deploy button, Cloudflare will prompt for the core run
 
 | Variable | Purpose |
 | --- | --- |
-| `CONVEX_DEPLOY_KEY` | GitHub Action secret for Convex deploys |
 | `CLOUDFLARE_API_TOKEN` | GitHub Action secret for Cloudflare deploys |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account identifier |
-| `HELP_CENTER_HOST` | Optional docs-only hostname rewrite |
 
 ## Widget Contract
 

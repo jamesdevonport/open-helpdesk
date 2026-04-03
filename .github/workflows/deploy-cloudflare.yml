@@ -8,12 +8,12 @@ on:
 
 jobs:
   deploy:
-    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' && vars.NEXT_PUBLIC_CONVEX_URL != '' && vars.CONVEX_SITE_URL != '' && vars.SITE_URL != '' }}
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' && secrets.CONVEX_DEPLOY_KEY != '' }}
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_CONVEX_URL: ${{ vars.NEXT_PUBLIC_CONVEX_URL }}
-      CONVEX_SITE_URL: ${{ vars.CONVEX_SITE_URL }}
+      CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
       SITE_URL: ${{ vars.SITE_URL }}
+      HELP_CENTER_HOST: ${{ vars.HELP_CENTER_HOST }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
@@ -23,5 +23,4 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build:widget
       - run: npm run deploy:cloudflare

@@ -31,11 +31,11 @@ const env = { ...fileEnv, ...process.env };
 
 const required = [
   "NEXT_PUBLIC_CONVEX_URL",
-  "CONVEX_SITE_URL",
-  "SITE_URL",
 ];
 
 const optional = [
+  "CONVEX_SITE_URL",
+  "SITE_URL",
   "POSTMARK_SERVER_TOKEN",
   "POSTMARK_INBOUND_ADDRESS",
   "POSTMARK_WEBHOOK_SECRET",

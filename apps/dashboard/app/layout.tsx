@@ -19,13 +19,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const convexUrl = readRuntimeEnv("NEXT_PUBLIC_CONVEX_URL");
+  const convexUrl =
+    readRuntimeEnv("NEXT_PUBLIC_CONVEX_URL") ||
+    process.env.NEXT_PUBLIC_CONVEX_URL ||
+    "";
   const convexSiteUrl =
-    readRuntimeEnv("CONVEX_SITE_URL") || convexUrl.replace(".cloud", ".site");
+    readRuntimeEnv("CONVEX_SITE_URL") ||
+    process.env.CONVEX_SITE_URL ||
+    convexUrl.replace(".cloud", ".site");
   const runtimeConfig = {
     convexUrl,
     convexSiteUrl,
-    siteUrl: readRuntimeEnv("SITE_URL"),
+    siteUrl: readRuntimeEnv("SITE_URL") || process.env.SITE_URL || "",
   };
 
   return (

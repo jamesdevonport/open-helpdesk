@@ -9,9 +9,7 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "NEXT_PUBLIC_CONVEX_URL": "https://your-deployment.convex.cloud",
-    "CONVEX_SITE_URL": "https://your-deployment.convex.site",
-    "SITE_URL": "https://support.example.com",
+    "SITE_URL": "",
     "HELP_CENTER_HOST": ""
   }
 }
